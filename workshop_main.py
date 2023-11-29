@@ -2,7 +2,7 @@ import sys
 from workshop_interface import *
 from PyQt5 import QtCore, QtGui, QtWidgets, QtSql
 from PyQt5.QtWidgets import QSizePolicy, QMessageBox
-from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtCore import QSize, QDate
 from datetime import date
 import DB_work
@@ -39,6 +39,10 @@ class MyWin(QtWidgets.QMainWindow):
         self.ui.pushButton.clicked.connect(lambda: self.ui.stackedWidget.setCurrentIndex(0))
         self.ui.pushButton_2.clicked.connect(lambda: self.ui.stackedWidget.setCurrentIndex(1))
         self.ui.pushButton_3.clicked.connect(lambda: self.ui.stackedWidget.setCurrentIndex(2))
+
+        self.ui.btn_title.clicked.connect(lambda: self.ui.stackedWidget_main.setCurrentIndex(0))
+        self.ui.pushButton_shop.clicked.connect(lambda: self.ui.stackedWidget_main.setCurrentIndex(1))
+        self.ui.pushButton_profile.clicked.connect(lambda: self.ui.stackedWidget_main.setCurrentIndex(2))
         
         # Подключение функций к пунктам меню
         self.ui.action_4.triggered.connect(lambda:self.close())
@@ -48,10 +52,18 @@ class MyWin(QtWidgets.QMainWindow):
         # Установка иконок к кнопкам навигации
         self.ui.pushButton.setIcon(QIcon('Icons\\home2.png'))
         self.ui.pushButton.setIconSize(QSize(35, 35))
-        self.ui.pushButton_2.setIcon(QIcon('Icons\\shopping_cart.png'))
+        self.ui.pushButton_2.setIcon(QIcon('Icons\\database.png'))
         self.ui.pushButton_2.setIconSize(QSize(35, 35))
         self.ui.pushButton_3.setIcon(QIcon('Icons\\pie_chart.png'))
         self.ui.pushButton_3.setIconSize(QSize(35, 35))
+        self.ui.pushButton_shop.setIcon(QIcon('Icons\\shopping_cart.png'))
+        self.ui.pushButton_shop.setIconSize(QSize(20, 20))
+        self.ui.pushButton_profile.setIcon(QIcon('Icons\\profile.png'))
+        self.ui.pushButton_profile.setIconSize(QSize(20, 20))
+
+        pixmap = QPixmap('Icons\\technology.png')
+        p = pixmap.scaled(80, 80, QtCore.Qt.KeepAspectRatio)
+        self.ui.label.setPixmap(p)
 
         # Установка минимальной даты для выбора (устанавливает текущую дату)
         self.ui.dateEdit.setMinimumDate(QDate(date.today()))
@@ -86,12 +98,12 @@ class MyWin(QtWidgets.QMainWindow):
                 nes_detail = db_select[0][2]
                 detail_amount = DB_work.select_detail_count(nes_detail)
                 if detail_amount == 0:
-                    surname = self.ui.lineEdit.text()
-                    service = self.ui.comboBox.itemText(self.ui.comboBox.currentIndex())
-                    date = self.ui.dateEdit.date()
-                    total = self.ui.label_6.text()
                     return
-                
+
+                surname = self.ui.lineEdit.text()
+                service = self.ui.comboBox.itemText(self.ui.comboBox.currentIndex())
+                date = self.ui.dateEdit.date()
+                total = self.ui.label_6.text()
                 DB_work.add_data(surname, service, date.toPyDate(), total)
                 DB_work.update_data(nes_detail)
 
@@ -104,9 +116,9 @@ class MyWin(QtWidgets.QMainWindow):
         except:
             self.warning = QMessageBox.warning(self, 'Ошибка', "Возникла непредвиденная ошибка", QMessageBox.Ok)
 
-    def closeEvent(self, event):
-        if self.warning == QMessageBox.Ok:
-            event.accept()
+    # def closeEvent(self, event):
+    #     if self.warning == QMessageBox.Ok:
+    #         event.accept()
         
         
 

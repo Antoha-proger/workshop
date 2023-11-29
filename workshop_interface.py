@@ -12,10 +12,14 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 class myButton(QtWidgets.QPushButton):
     def enterEvent(self, event):
-        self.setStyleSheet("background-color: rgb(255, 255, 255, 0); color:#FF9200; border-style: outset; border-width: 1px; border-color: #FF9200")
+        self.setStyleSheet("background-color: rgb(255, 255, 255, 0); color:#FF9200; border-style: outset; "
+                           "border-width: 1px; "
+                           "border-color: #FF9200;"
+                           "font: 75 10pt \"Segoe Print\";"
+                           "border-radius:5px")
 
     def leaveEvent(self, event):
-        self.setStyleSheet("background-color: rgb(255, 255, 255, 0); color:#FF9200;")
+        self.setStyleSheet("background-color: rgb(255, 255, 255, 0); color:#FF9200; font: 75 10pt \"Segoe Print\";")
 
 
 class Ui_MainWindow(object):
@@ -25,32 +29,39 @@ class Ui_MainWindow(object):
         MainWindow.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
-        self.stackedWidget = QtWidgets.QStackedWidget(self.centralwidget)
-        self.stackedWidget.setGeometry(QtCore.QRect(109, 9, 641, 341))
+        self.stackedWidget_main = QtWidgets.QStackedWidget(self.centralwidget)
+        self.stackedWidget_main.setGeometry(QtCore.QRect(0, 9, 751, 381))
+        self.stackedWidget_main.setStyleSheet("background-color: white;")
+        self.stackedWidget_main.setObjectName("stackedWidget_main")
+        self.shop_page = QtWidgets.QWidget()
+        self.shop_page.setObjectName('shop_page')
+
+        self.stackedWidget = QtWidgets.QStackedWidget(self.shop_page)
+        self.stackedWidget.setGeometry(QtCore.QRect(109, 58, 641, 291))
         self.stackedWidget.setStyleSheet("background-color: #25567B;")
         self.stackedWidget.setObjectName("stackedWidget")
         self.page = QtWidgets.QWidget()
         self.page.setObjectName("page")
         self.label = QtWidgets.QLabel(self.page)
-        self.label.setGeometry(QtCore.QRect(240, 30, 141, 71))
-        self.label.setStyleSheet("color: #FF9200;\n"
-"font: 75 14pt \"Segoe Print\";")
+        self.label.setGeometry(QtCore.QRect(240, 5, 101, 100))
+#         self.label.setStyleSheet("color: #FF9200;\n"
+# "font: 75 14pt \"Segoe Print\";")
         self.label.setObjectName("label")
 
         self.service_lbl = QtWidgets.QLabel(self.page)
-        self.service_lbl.setGeometry(QtCore.QRect(45, 210, 301, 51))
+        self.service_lbl.setGeometry(QtCore.QRect(45, 180, 301, 51))
         self.service_lbl.setStyleSheet("color: #FF9200;\n"
                                  "font: 75 10pt \"Segoe Print\";")
         self.service_lbl.setObjectName("service_lbl")
 
         self.good_lbl = QtWidgets.QLabel(self.page)
-        self.good_lbl.setGeometry(QtCore.QRect(45, 250, 301, 51))
+        self.good_lbl.setGeometry(QtCore.QRect(45, 220, 301, 51))
         self.good_lbl.setStyleSheet("color: #FF9200;\n"
                                        "font: 75 10pt \"Segoe Print\";")
         self.good_lbl.setObjectName("good_lbl")
 
         self.amount_lbl = QtWidgets.QLabel(self.page)
-        self.amount_lbl.setGeometry(QtCore.QRect(45, 300, 301, 51))
+        self.amount_lbl.setGeometry(QtCore.QRect(45, 255, 301, 51))
         self.amount_lbl.setStyleSheet("color: #FF5555;\n"
                                  "font: 75 10pt \"Segoe Print\";")
         self.amount_lbl.setObjectName("amount_lbl")
@@ -84,17 +95,17 @@ class Ui_MainWindow(object):
 "background-color: rgb(255, 255, 255);")
         self.dateEdit.setObjectName("dateEdit")
         self.pushButton_4 = QtWidgets.QPushButton(self.page)
-        self.pushButton_4.setGeometry(QtCore.QRect(474, 300, 151, 31))
+        self.pushButton_4.setGeometry(QtCore.QRect(474, 250, 151, 31))
         self.pushButton_4.setStyleSheet("background-color: rgb(255, 255, 255);\n"
 "")
         self.pushButton_4.setObjectName("pushButton_4")
         self.label_5 = QtWidgets.QLabel(self.page)
-        self.label_5.setGeometry(QtCore.QRect(480, 270, 47, 13))
+        self.label_5.setGeometry(QtCore.QRect(480, 210, 47, 13))
         self.label_5.setStyleSheet("color:#FF9200    ;\n"
 "font: 11pt \"MS Shell Dlg 2\";")
         self.label_5.setObjectName("label_5")
         self.label_6 = QtWidgets.QLabel(self.page)
-        self.label_6.setGeometry(QtCore.QRect(546, 270, 71, 16))
+        self.label_6.setGeometry(QtCore.QRect(546, 210, 71, 16))
         self.label_6.setStyleSheet("color:#FF9200    ;\n"
 "font: 11pt \"MS Shell Dlg 2\";")
         self.label_6.setText("0")
@@ -103,12 +114,12 @@ class Ui_MainWindow(object):
         self.page_2 = QtWidgets.QWidget()
         self.page_2.setObjectName("page_2")
         self.tableWidget = QtWidgets.QTableView(self.page_2)
-        self.tableWidget.setGeometry(QtCore.QRect(25, 31, 591, 251))
+        self.tableWidget.setGeometry(QtCore.QRect(25, 21, 591, 201))
         self.tableWidget.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.tableWidget.setObjectName("tableView")
 
         self.total_lbl = QtWidgets.QLabel(self.page_2)
-        self.total_lbl.setGeometry(QtCore.QRect(30, 305, 550, 20))
+        self.total_lbl.setGeometry(QtCore.QRect(30, 250, 550, 20))
         self.total_lbl.setStyleSheet("color: #FF9200;\n"
                                          "font: 75 10pt \"Segoe Print\";")
         self.total_lbl.setObjectName("total_lbl")
@@ -120,25 +131,75 @@ class Ui_MainWindow(object):
         self.vbl.setGeometry(QtCore.QRect(25, 31, 600, 150))
         self.vbl.setObjectName('vbl')
         self.stackedWidget.addWidget(self.page_3)
-        self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(10, 9, 91, 341))
+        self.frame = QtWidgets.QFrame(self.shop_page)
+        self.frame.setGeometry(QtCore.QRect(10, 58, 91, 291))
         self.frame.setStyleSheet("background-color: #25567B;")
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame.setObjectName("frame")
         self.pushButton = myButton(self.frame)
-        self.pushButton.setGeometry(QtCore.QRect(10, 10, 75, 71))
+        self.pushButton.setGeometry(QtCore.QRect(10, 10, 75, 51))
         self.pushButton.setStyleSheet("background-color: rgb(255, 255, 255, 0); color:#FF9200;")
         self.pushButton.setObjectName("pushButton")
         self.pushButton_2 = myButton(self.frame)
-        self.pushButton_2.setGeometry(QtCore.QRect(9, 130, 75, 71))
+        self.pushButton_2.setGeometry(QtCore.QRect(9, 110, 75, 51))
         self.pushButton_2.setStyleSheet("background-color: rgb(255, 255, 255, 0); color:#FF9200;")
         self.pushButton_2.setObjectName("pushButton_2")
         self.pushButton_3 = myButton(self.frame)
-        self.pushButton_3.setGeometry(QtCore.QRect(12, 260, 75, 71))
+        self.pushButton_3.setGeometry(QtCore.QRect(12, 214, 75, 51))
         self.pushButton_3.setStyleSheet("background-color: rgb(255, 255, 255, 0); color:#FF9200;")
         self.pushButton_3.setObjectName("pushButton_3")
+
+        self.frame_menu = QtWidgets.QFrame(self.centralwidget)
+        self.frame_menu.setGeometry(QtCore.QRect(10, 9, 741, 40))
+        self.frame_menu.setStyleSheet("background-color: #25567B;")
+        self.frame_menu.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_menu.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_menu.setObjectName("frame_menu")
+
+        self.btn_title = myButton(self.frame_menu)
+        self.btn_title.setGeometry(QtCore.QRect(10, 5, 141, 30))
+        self.btn_title.setStyleSheet("color: #FF9200;\n"
+                                 "font: 75 10pt \"Segoe Print\"; background-color: rgb(255, 255, 255, 0);")
+        self.btn_title.setObjectName("btn_title")
+
+        self.pushButton_profile = myButton(self.frame_menu)
+        self.pushButton_profile.setGeometry(QtCore.QRect(700, 6, 40, 25))
+        self.pushButton_profile.setStyleSheet("background-color: rgb(255, 255, 255, 0); color:#FF9200;")
+        self.pushButton_profile.setObjectName("pushButton_profile")
+
+        self.pushButton_shop = myButton(self.frame_menu)
+        self.pushButton_shop.setGeometry(QtCore.QRect(650, 6, 40, 25))
+        self.pushButton_shop.setStyleSheet("background-color: rgb(255, 255, 255, 0); color:#FF9200;")
+        self.pushButton_shop.setObjectName("pushButton_shop")
+
         MainWindow.setCentralWidget(self.centralwidget)
+        self.stackedWidget_main.addWidget(self.shop_page)
+        self.cart_page = QtWidgets.QWidget()
+        self.cart_page.setObjectName('cart_page')
+
+        self.shop_frame = QtWidgets.QFrame(self.cart_page)
+        self.shop_frame.setGeometry(QtCore.QRect(10, 58, 741, 291))
+        self.shop_frame.setStyleSheet("background-color: #25567B;")
+        self.shop_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.shop_frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.shop_frame.setObjectName("shop_frame")
+
+        self.stackedWidget_main.addWidget(self.cart_page)
+
+        self.profile_page = QtWidgets.QWidget()
+        self.profile_page.setObjectName('profile_page')
+
+        self.profile_frame = QtWidgets.QFrame(self.profile_page)
+        self.profile_frame.setGeometry(QtCore.QRect(10, 58, 741, 291))
+        self.profile_frame.setStyleSheet("background-color: #25567B;")
+        self.profile_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.profile_frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.profile_frame.setObjectName("profile_frame")
+
+        self.stackedWidget_main.addWidget(self.profile_page)
+
+
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 757, 21))
         self.menubar.setObjectName("menubar")
@@ -179,9 +240,10 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.label.setToolTip(_translate("MainWindow", "<html><head/><body><p align=\"center\"><br/></p></body></html>"))
-        self.label.setWhatsThis(_translate("MainWindow", "<html><head/><body><p align=\"center\"><br/></p></body></html>"))
-        self.label.setText(_translate("MainWindow", "Circuit Savior"))
+        #self.label.setToolTip(_translate("MainWindow", "<html><head/><body><p align=\"center\"><br/></p></body></html>"))
+        #self.label.setWhatsThis(_translate("MainWindow", "<html><head/><body><p align=\"center\"><br/></p></body></html>"))
+        self.label.setText(_translate("MainWindow", ""))
+        self.btn_title.setText(_translate("MainWindow", "Circuit Savior"))
         self.service_lbl.setText(_translate("MainWindow", ""))
         self.good_lbl.setText(_translate("MainWindow", ""))
         self.amount_lbl.setText(_translate("MainWindow", ""))
@@ -194,6 +256,8 @@ class Ui_MainWindow(object):
         self.pushButton.setText(_translate("MainWindow", ""))
         self.pushButton_2.setText(_translate("MainWindow", ""))
         self.pushButton_3.setText(_translate("MainWindow", ""))
+        self.pushButton_profile.setText(_translate("MainWindow", ""))
+        self.pushButton_shop.setText(_translate("MainWindow", ""))
         self.menu.setTitle(_translate("MainWindow", "Файл"))
         self.menu_2.setTitle(_translate("MainWindow", "О программе"))
         self.menu_3.setTitle(_translate("MainWindow", "Инструкция"))
