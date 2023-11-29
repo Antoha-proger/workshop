@@ -1,7 +1,7 @@
 import sys
 from workshop_interface import *
 from PyQt5 import QtCore, QtGui, QtWidgets, QtSql
-from PyQt5.QtWidgets import QSizePolicy, QMessageBox
+from PyQt5.QtWidgets import QSizePolicy, QMessageBox, QTableWidgetItem
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtCore import QSize, QDate
 from datetime import date
@@ -23,6 +23,16 @@ class MyWin(QtWidgets.QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
+        self.setStyleSheet("""
+                QTableWidget{
+                    color:#FF9200;
+                    gridline-color: #25567B;
+                    border: transparent;
+                    font: 8pt \"Segoe Print\";
+                }
+        """)
+
+        #self.ui.order_table.setFrameStyle(0)
         # Список для хранения услуг
         self.name_of_services = []
         # Переменная, хранящая выборку из таблицы services БД workshop.db
@@ -72,6 +82,14 @@ class MyWin(QtWidgets.QMainWindow):
         # Подключение функции к кнопке оформления заказа
         self.ui.pushButton_4.clicked.connect(self.place_order)
 
+        self.row_count = 0
+        self.total = 0
+
+        self.isregistration = False
+
+        self.ui.ent_button.clicked.connect(lambda: self.ui.enter_stack.setCurrentIndex(0))
+        self.ui.reg_button.clicked.connect(lambda: self.ui.enter_stack.setCurrentIndex(1))
+
 
     # Функция, срабатывающая при изменении значения в combobox'е
     def cbb_changed(self):
@@ -92,26 +110,25 @@ class MyWin(QtWidgets.QMainWindow):
 
     def place_order(self):
         try:
-            surname_value = self.ui.lineEdit.text()
-            if surname_value.isalpha():
-                db_select = DB_work.select_name_n_price(self.ui.comboBox.itemText(self.ui.comboBox.currentIndex()))
-                nes_detail = db_select[0][2]
-                detail_amount = DB_work.select_detail_count(nes_detail)
-                if detail_amount == 0:
-                    return
 
-                surname = self.ui.lineEdit.text()
-                service = self.ui.comboBox.itemText(self.ui.comboBox.currentIndex())
-                date = self.ui.dateEdit.date()
-                total = self.ui.label_6.text()
-                DB_work.add_data(surname, service, date.toPyDate(), total)
-                DB_work.update_data(nes_detail)
+            self.row_count += 1
 
-            else:
-                self.ui.lineEdit.clear()
-                self.warning = QMessageBox.warning(self, 'Ошибка', "Фамилия должна содержать только буквы", QMessageBox.Ok)
-                
-                
+            db_select = DB_work.select_name_n_price(self.ui.comboBox.itemText(self.ui.comboBox.currentIndex()))
+            nes_detail = db_select[0][2]
+            detail_amount = DB_work.select_detail_count(nes_detail)
+            if detail_amount == 0:
+                return
+
+            self.ui.order_table.setRowCount(self.row_count + 1)
+
+            db_select = DB_work.select_name_n_price(self.ui.comboBox.itemText(self.ui.comboBox.currentIndex()))
+            self.ui.order_table.setItem(self.row_count - 1, 0, QTableWidgetItem(db_select[0][0]))
+            self.ui.order_table.setItem(self.row_count - 1, 1, QTableWidgetItem(str(db_select[0][1])))
+            self.ui.order_table.setItem(self.row_count - 1, 2, QTableWidgetItem(db_select[0][2]))
+            self.ui.order_table.setItem(self.row_count - 1, 3, QTableWidgetItem(str(db_select[0][3])))
+            self.total += db_select[0][1] + db_select[0][3]
+            self.ui.order_table.setItem(self.row_count, 0, QTableWidgetItem("Итог"))
+            self.ui.order_table.setItem(self.row_count, 3, QTableWidgetItem(str(self.total)))
         
         except:
             self.warning = QMessageBox.warning(self, 'Ошибка', "Возникла непредвиденная ошибка", QMessageBox.Ok)

@@ -14,8 +14,8 @@ def select_all(database, table):
 
 def add_data(surname, service, date, total, database='workshop.db', table='consumers'):
     '''
-    Функция для добавлеия данных о покуателях в базу данных.
-    Принемает следующие параметры:
+    Функция для добавления данных о покупателях в базу данных.
+    Принимает следующие параметры:
     surname - фамилия клиента,
     service - услуга, оказываемая клиенту,
     total - итоговая сумма
@@ -43,7 +43,7 @@ def select_name_n_price(name_of_service, database='workshop.db'):
 def select_detail_count(detail, table = "warehouse", database = "workshop.db"):
     con = sq.connect(database)
     cursor = con.cursor()
-    cursor.execute(f"SELECT amount FROM warehouse WHERE name_of_good = '{detail}'")
+    cursor.execute(f"SELECT amount FROM {table} WHERE name_of_good = '{detail}'")
     return int(cursor.fetchall()[0][0])
 
 
@@ -68,10 +68,15 @@ def chart():
     return cursor.fetchall()
 
 
-def update_data(detail):
+def update_data(detail, table="services"):
+    field = ''
+    if table == "warehouse":
+        field = 'amount'
+    if table == "services":
+        field = "detail_amount"
     con = sq.connect('workshop.db')
     cursor = con.cursor()
-    cursor.execute(f"UPDATE warehouse SET amount = amount - 1 WHERE name_of_good = '{detail}'")
+    cursor.execute(f"UPDATE {table} SET '{field}' = '{field}' - 1 WHERE name_of_good = '{detail}'")
     con.commit()
 
 ##con = sq.connect('workshop.db')

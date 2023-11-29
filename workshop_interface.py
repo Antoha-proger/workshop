@@ -96,8 +96,7 @@ class Ui_MainWindow(object):
         self.dateEdit.setObjectName("dateEdit")
         self.pushButton_4 = QtWidgets.QPushButton(self.page)
         self.pushButton_4.setGeometry(QtCore.QRect(474, 250, 151, 31))
-        self.pushButton_4.setStyleSheet("background-color: rgb(255, 255, 255);\n"
-"")
+        self.pushButton_4.setStyleSheet("background-color: #FF9200; color:#0000BA; font: 8pt \"Segoe Print\";")
         self.pushButton_4.setObjectName("pushButton_4")
         self.label_5 = QtWidgets.QLabel(self.page)
         self.label_5.setGeometry(QtCore.QRect(480, 210, 47, 13))
@@ -185,6 +184,27 @@ class Ui_MainWindow(object):
         self.shop_frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.shop_frame.setObjectName("shop_frame")
 
+        self.cart_label = QtWidgets.QLabel(self.shop_frame)
+        self.cart_label.setGeometry(QtCore.QRect(10, 10, 100, 30))
+        self.cart_label.setStyleSheet("color:#FF9200    ;\n"
+                                   "font: 14pt \"Segoe Print\";")
+        self.cart_label.setObjectName("cart_label")
+
+        self.order_table = QtWidgets.QTableWidget(self.shop_frame)
+        self.order_table.setGeometry(QtCore.QRect(25, 45, 700, 201))
+        self.order_table.setStyleSheet("background-color: #25567B;")
+        self.order_table.setObjectName("order_table")
+        self.order_table.setColumnCount(4)
+
+        self.order_table.verticalHeader().hide()
+        self.order_table.horizontalHeader().hide()
+        self.order_table.horizontalHeader().setDefaultSectionSize(175)
+
+        self.place_order_btn = QtWidgets.QPushButton(self.shop_frame)
+        self.place_order_btn.setGeometry(QtCore.QRect(550, 250, 151, 25))
+        self.place_order_btn.setStyleSheet("background-color: #FF9200; color:#0000BA; font: 8pt \"Segoe Print\";")
+        self.place_order_btn.setObjectName("place_order_btn")
+
         self.stackedWidget_main.addWidget(self.cart_page)
 
         self.profile_page = QtWidgets.QWidget()
@@ -197,6 +217,129 @@ class Ui_MainWindow(object):
         self.profile_frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.profile_frame.setObjectName("profile_frame")
 
+        self.profile_label = QtWidgets.QLabel(self.profile_frame)
+        self.profile_label.setGeometry(QtCore.QRect(10, 10, 100, 30))
+        self.profile_label.setStyleSheet("color:#FF9200    ;\n"
+                                      "font: 14pt \"Segoe Print\";")
+        self.profile_label.setObjectName("profile_label")
+
+        self.profile_stack = QtWidgets.QStackedWidget(self.profile_frame)
+        self.profile_stack.setGeometry(QtCore.QRect(25, 45, 700, 231))
+        self.profile_stack.setStyleSheet("background-color: #25567B;")
+        self.profile_stack.setObjectName("profile_stack")
+
+        self.enter_page = QtWidgets.QWidget()
+        self.enter_page.setObjectName('enter_page')
+
+        self.enter_stack = QtWidgets.QStackedWidget(self.enter_page)
+        self.enter_stack.setGeometry(QtCore.QRect(180, 40, 300, 180))
+        self.enter_stack.setStyleSheet("background-color: #25567B; border-style: outset; border-width: "
+                                       "1px;border-color: #FF9200;")
+        self.enter_stack.setObjectName("enter_stack")
+
+        self.ent_page_stack = QtWidgets.QWidget()
+        self.ent_page_stack.setObjectName('ent_page_stack')
+
+        self.ent_lbl = QtWidgets.QLabel(self.ent_page_stack)
+        self.ent_lbl.setGeometry(QtCore.QRect(120, 10, 50, 30))
+        self.ent_lbl.setStyleSheet("color:#FF9200;font: 12pt \"Segoe Print\"; border-style: outset; border-width: "
+                                       "0px")
+        self.ent_lbl.setObjectName("ent_lbl")
+
+        self.email_lbl = QtWidgets.QLabel(self.ent_page_stack)
+        self.email_lbl.setGeometry(QtCore.QRect(20, 50, 50, 30))
+        self.email_lbl.setStyleSheet("color:#FF9200;font: 12pt \"Segoe Print\"; border-style: outset; border-width: "
+                                   "0px")
+        self.email_lbl.setObjectName("email_lbl")
+
+        self.password_lbl = QtWidgets.QLabel(self.ent_page_stack)
+        self.password_lbl.setGeometry(QtCore.QRect(20, 90, 50, 30))
+        self.password_lbl.setStyleSheet("color:#FF9200;font: 12pt \"Segoe Print\"; border-style: outset; border-width: "
+                                   "0px")
+        self.password_lbl.setObjectName("password_lbl")
+
+        self.email_lineEdit = QtWidgets.QLineEdit(self.ent_page_stack)
+        self.email_lineEdit.setGeometry(QtCore.QRect(80, 55, 150, 20))
+        self.email_lineEdit.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.email_lineEdit.setObjectName("email_lineEdit")
+
+        self.password_lineEdit = QtWidgets.QLineEdit(self.ent_page_stack)
+        self.password_lineEdit.setGeometry(QtCore.QRect(80, 95, 150, 20))
+        self.password_lineEdit.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.password_lineEdit.setObjectName("password_lineEdit")
+        self.password_lineEdit.setEchoMode(QtWidgets.QLineEdit.Password)
+
+        self.conf_ent_button = myButton(self.ent_page_stack)
+        self.conf_ent_button.setGeometry(QtCore.QRect(80, 140, 145, 25))
+        self.conf_ent_button.setStyleSheet(
+            "background-color: rgb(255, 255, 255, 0); color:#FF9200; font: 75 10pt \"Segoe Print\"; ")
+        self.conf_ent_button.setObjectName("conf_ent_button")
+
+        self.enter_stack.addWidget(self.ent_page_stack)
+
+        self.reg_page_stack = QtWidgets.QWidget()
+        self.reg_page_stack.setObjectName('reg_page_stack')
+
+        self.reg_lbl = QtWidgets.QLabel(self.reg_page_stack)
+        self.reg_lbl.setGeometry(QtCore.QRect(100, 10, 130, 30))
+        self.reg_lbl.setStyleSheet("color:#FF9200;font: 12pt \"Segoe Print\"; border-style: outset; border-width: "
+                                   "0px")
+        self.reg_lbl.setObjectName("reg_lbl")
+
+        self.name_reg_lbl = QtWidgets.QLabel(self.reg_page_stack)
+        self.name_reg_lbl.setGeometry(QtCore.QRect(20, 55, 50, 30))
+        self.name_reg_lbl.setStyleSheet("color:#FF9200;font: 8pt \"Segoe Print\"; border-style: outset; border-width: "
+                                     "0px")
+        self.name_reg_lbl.setObjectName("name_reg_lbl")
+
+        self.name_reg_lineEdit = QtWidgets.QLineEdit(self.reg_page_stack)
+        self.name_reg_lineEdit.setGeometry(QtCore.QRect(80, 65, 150, 15))
+        self.name_reg_lineEdit.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.name_reg_lineEdit.setObjectName("name_reg_lineEdit")
+
+        self.email_reg_lbl = QtWidgets.QLabel(self.reg_page_stack)
+        self.email_reg_lbl.setGeometry(QtCore.QRect(20, 80, 50, 30))
+        self.email_reg_lbl.setStyleSheet("color:#FF9200;font: 8pt \"Segoe Print\"; border-style: outset; border-width: "
+                                     "0px")
+        self.email_reg_lbl.setObjectName("email_reg_lbl")
+
+        self.password_reg_lbl = QtWidgets.QLabel(self.reg_page_stack)
+        self.password_reg_lbl.setGeometry(QtCore.QRect(20, 105, 50, 30))
+        self.password_reg_lbl.setStyleSheet("color:#FF9200;font: 8pt \"Segoe Print\"; border-style: outset; border-width: "
+                                        "0px")
+        self.password_reg_lbl.setObjectName("password_reg_lbl")
+
+        self.email_reg_lineEdit = QtWidgets.QLineEdit(self.reg_page_stack)
+        self.email_reg_lineEdit.setGeometry(QtCore.QRect(80, 90, 150, 15))
+        self.email_reg_lineEdit.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.email_reg_lineEdit.setObjectName("email_reg_lineEdit")
+
+        self.password_reg_lineEdit = QtWidgets.QLineEdit(self.reg_page_stack)
+        self.password_reg_lineEdit.setGeometry(QtCore.QRect(80, 115, 150, 15))
+        self.password_reg_lineEdit.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.password_reg_lineEdit.setObjectName("password_reg_lineEdit")
+        self.password_reg_lineEdit.setEchoMode(QtWidgets.QLineEdit.Password)
+
+        self.conf_reg_button = myButton(self.reg_page_stack)
+        self.conf_reg_button.setGeometry(QtCore.QRect(80, 140, 160, 25))
+        self.conf_reg_button.setStyleSheet(
+            "background-color: rgb(255, 255, 255, 0); color:#FF9200; font: 75 10pt \"Segoe Print\"; ")
+        self.conf_reg_button.setObjectName("conf_reg_button")
+
+        self.enter_stack.addWidget(self.reg_page_stack)
+
+
+        self.ent_button = myButton(self.enter_page)
+        self.ent_button.setGeometry(QtCore.QRect(180, 10, 145, 25))
+        self.ent_button.setStyleSheet("background-color: rgb(255, 255, 255, 0); color:#FF9200; font: 75 10pt \"Segoe Print\";")
+        self.ent_button.setObjectName("ent_button")
+
+        self.reg_button = myButton(self.enter_page)
+        self.reg_button.setGeometry(QtCore.QRect(333, 10, 145, 25))
+        self.reg_button.setStyleSheet("background-color: rgb(255, 255, 255, 0); color:#FF9200; font: 75 10pt \"Segoe Print\";")
+        self.reg_button.setObjectName("reg_button")
+
+        self.profile_stack.addWidget(self.enter_page)
         self.stackedWidget_main.addWidget(self.profile_page)
 
 
@@ -250,10 +393,19 @@ class Ui_MainWindow(object):
         self.label_2.setText(_translate("MainWindow", "Введите фамилию:"))
         self.label_3.setText(_translate("MainWindow", "Выберете вид услуги:"))
         self.label_4.setText(_translate("MainWindow", "Выберете дату оказания услуги:"))
-        self.pushButton_4.setText(_translate("MainWindow", "Оформить заказ"))
+        self.ent_lbl.setText(_translate("MainWindow", "Вход"))
+        self.email_lbl.setText(_translate("MainWindow", "Email:"))
+        self.password_lbl.setText(_translate("MainWindow", "Пароль"))
+        self.pushButton_4.setText(_translate("MainWindow", "Добавить в корзину"))
         self.label_5.setText(_translate("MainWindow", "Итог:"))
+        self.cart_label.setText(_translate("MainWindow", "Корзина"))
+        self.profile_label.setText(_translate("MainWindow", "Профиль"))
         #self.total_lbl.setText(_translate("MainWindow", "Суммарная стоимость всех оказанных услуг:"))
         self.pushButton.setText(_translate("MainWindow", ""))
+        self.conf_ent_button.setText(_translate("MainWindow", "Войти"))
+        self.ent_button.setText(_translate("MainWindow", "Вход"))
+        self.reg_button.setText(_translate("MainWindow", "Регистрация"))
+        self.place_order_btn.setText(_translate("MainWindow", "Оформить заказ"))
         self.pushButton_2.setText(_translate("MainWindow", ""))
         self.pushButton_3.setText(_translate("MainWindow", ""))
         self.pushButton_profile.setText(_translate("MainWindow", ""))
@@ -266,3 +418,9 @@ class Ui_MainWindow(object):
         self.action_4.setText(_translate("MainWindow", "Выход"))
         self.action_5.setText(_translate("MainWindow", "О программе"))
         self.action_6.setText(_translate("MainWindow", "Инструкция по работе с программой"))
+
+        self.reg_lbl.setText(_translate("MainWindow", "Регистрация"))
+        self.email_reg_lbl.setText(_translate("MainWindow", "Email:"))
+        self.password_reg_lbl.setText(_translate("MainWindow", "Пароль:"))
+        self.conf_reg_button.setText(_translate("MainWindow", "Зарегистрироваться"))
+        self.name_reg_lbl.setText(_translate("MainWindow", "Имя:"))
