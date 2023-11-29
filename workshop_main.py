@@ -80,7 +80,7 @@ class MyWin(QtWidgets.QMainWindow):
         # Подключение функции к combobox'у
         self.ui.comboBox.currentIndexChanged.connect(self.cbb_changed)
         # Подключение функции к кнопке оформления заказа
-        self.ui.pushButton_4.clicked.connect(self.place_order)
+        self.ui.pushButton_4.clicked.connect(self.add_good)
 
         self.row_count = 0
         self.total = 0
@@ -89,6 +89,16 @@ class MyWin(QtWidgets.QMainWindow):
 
         self.ui.ent_button.clicked.connect(lambda: self.ui.enter_stack.setCurrentIndex(0))
         self.ui.reg_button.clicked.connect(lambda: self.ui.enter_stack.setCurrentIndex(1))
+
+        self.ui.conf_reg_button.clicked.connect(self.add_new_user)
+        self.ui.conf_ent_button.clicked.connect(self.enter)
+
+        self.service_name = ''
+        self.service_price = ''
+        self.detail = ''
+        self.detail_price = ''
+
+        self.ui.place_order_btn.clicked.connect(self.place_order)
 
 
     # Функция, срабатывающая при изменении значения в combobox'е
@@ -108,7 +118,7 @@ class MyWin(QtWidgets.QMainWindow):
         # Установка текста итоговой цены
         self.ui.label_6.setText(f'{db_select[0][1] + db_select[0][3]}')
 
-    def place_order(self):
+    def add_good(self):
         try:
 
             self.row_count += 1
@@ -129,6 +139,11 @@ class MyWin(QtWidgets.QMainWindow):
             self.total += db_select[0][1] + db_select[0][3]
             self.ui.order_table.setItem(self.row_count, 0, QTableWidgetItem("Итог"))
             self.ui.order_table.setItem(self.row_count, 3, QTableWidgetItem(str(self.total)))
+
+            self.service_name = self.service_name + ', ' + str(db_select[0][0])
+            self.service_price = self.service_price + ', ' + str(db_select[0][1])
+            self.detail = self.detail + ', ' + str(db_select[0][2])
+            self.detail_price = self.detail_price + ', ' + str(db_select[0][3])
         
         except:
             self.warning = QMessageBox.warning(self, 'Ошибка', "Возникла непредвиденная ошибка", QMessageBox.Ok)
@@ -184,6 +199,48 @@ class MyWin(QtWidgets.QMainWindow):
         self.toolbar = NavigToolBar(self.canvas, self)
         self.ui.vbl.addWidget(self.toolbar)
 
+
+    def add_new_user(self):
+        name = self.ui.name_reg_lineEdit.text()
+        email = self.ui.email_reg_lineEdit.text()
+        password = self.ui.password_reg_lineEdit.text()
+        DB_work.add_user(name, email, password)
+
+    def enter(self):
+        email = self.ui.email_lineEdit.text()
+        password = self.ui.password_lineEdit.text()
+        try:
+            ent = DB_work.check_enter(email)
+            if password == ent[0][1]:
+                print("enter")
+                self.ui.profile_stack.setCurrentIndex(1)
+                user_info = DB_work.check_user_info(email)
+
+                self.ui.user_name.setText(user_info[0][0])
+                self.ui.user_surname.setText(user_info[0][1])
+                self.ui.user_email.setText(user_info[0][2])
+            else:
+                self.warning = QMessageBox.warning(self, 'Ошибка',
+                                                   "Возникла ошибка. Неправильный Email или пароль",
+                                                   QMessageBox.Ok)
+        except:
+            self.warning = QMessageBox.warning(self, 'Ошибка', "Неправильный Email или пароль", QMessageBox.Ok)
+
+
+        pixmap = QPixmap("Icons\\my_profile.png")
+        p = pixmap.scaled(60, 60, QtCore.Qt.KeepAspectRatio)
+        self.ui.profile_photo.setPixmap(p)
+        #self.ui.profile_stack.setCurrentIndex(1)
+
+    def place_order(self):
+        date_my = self.ui.dateEdit.date()
+        email = self.ui.email_lineEdit.text()
+        user_info = DB_work.check_user_info(email)
+        consumer_name = user_info[0][0]
+        #print(self.service_name, self.service_price, self.detail, self.detail_price, self.total, consumer_name, email, date_my.toPyDate())
+        DB_work.place_new_order(self.service_name, self.service_price, self.detail, self.detail_price,
+                                self.total,
+                                consumer_name, email, date_my.toPyDate())
 
 
 

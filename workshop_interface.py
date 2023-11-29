@@ -19,7 +19,9 @@ class myButton(QtWidgets.QPushButton):
                            "border-radius:5px")
 
     def leaveEvent(self, event):
-        self.setStyleSheet("background-color: rgb(255, 255, 255, 0); color:#FF9200; font: 75 10pt \"Segoe Print\";")
+        self.setStyleSheet("background-color: rgb(255, 255, 255, 0); color:#FF9200; font: 75 10pt \"Segoe Print\";"
+                           "border-style: outset; "
+                           "border-width: 0px; ")
 
 
 class Ui_MainWindow(object):
@@ -253,7 +255,7 @@ class Ui_MainWindow(object):
         self.email_lbl.setObjectName("email_lbl")
 
         self.password_lbl = QtWidgets.QLabel(self.ent_page_stack)
-        self.password_lbl.setGeometry(QtCore.QRect(20, 90, 50, 30))
+        self.password_lbl.setGeometry(QtCore.QRect(20, 90, 55, 30))
         self.password_lbl.setStyleSheet("color:#FF9200;font: 12pt \"Segoe Print\"; border-style: outset; border-width: "
                                    "0px")
         self.password_lbl.setObjectName("password_lbl")
@@ -340,6 +342,57 @@ class Ui_MainWindow(object):
         self.reg_button.setObjectName("reg_button")
 
         self.profile_stack.addWidget(self.enter_page)
+
+        self.user_page = QtWidgets.QWidget()
+        self.user_page.setObjectName('user_page')
+
+        self.user_frame_menu = QtWidgets.QFrame(self.user_page)
+        self.user_frame_menu.setGeometry(QtCore.QRect(0, 70, 65, 161))
+        self.user_frame_menu.setStyleSheet("background-color: #25567B;  border-style: outset; "
+                                           "border-width: 1px; "
+                                           "border-color: #FF9200;"
+                                           "border-radius: 20px")
+        self.user_frame_menu.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.user_frame_menu.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.user_frame_menu.setObjectName("profile_frame")
+
+
+
+        self.user_frame_info = QtWidgets.QFrame(self.user_page)
+        self.user_frame_info.setGeometry(QtCore.QRect(70, 0, 460, 65))
+        self.user_frame_info.setStyleSheet("background-color: #25567B;  border-style: outset; "
+                                           "border-width: 1px; "
+                                           "border-color: #FF9200;"
+                                           "border-radius: 20px")
+        self.user_frame_info.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.user_frame_info.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.user_frame_info.setObjectName("user_frame_info")
+
+        self.profile_photo = QtWidgets.QLabel(self.user_page)
+        self.profile_photo.setGeometry(QtCore.QRect(0, 0, 60, 60))
+        self.profile_photo.setObjectName('profile_photo')
+
+        self.user_name = QtWidgets.QLabel(self.user_frame_info)
+        self.user_name.setGeometry(QtCore.QRect(10, 5, 80, 25))
+        self.user_name.setObjectName('user_name')
+        self.user_name.setStyleSheet("color:#FF9200; font: 75 10pt \"Segoe Print\"; border-style: outset; border-width: "
+                                        "0px")
+
+        self.user_surname = QtWidgets.QLabel(self.user_frame_info)
+        self.user_surname.setGeometry(QtCore.QRect(60, 5, 80, 25))
+        self.user_surname.setObjectName('user_surname')
+        self.user_surname.setStyleSheet("color:#FF9200; font: 75 10pt \"Segoe Print\"; border-style: outset; border-width: "
+                                        "0px")
+
+        self.user_email = QtWidgets.QLabel(self.user_frame_info)
+        self.user_email.setGeometry(QtCore.QRect(10, 30, 120, 25))
+        self.user_email.setObjectName('user_email')
+        self.user_email.setStyleSheet(
+            "color:#FF9200; font: 75 10pt \"Segoe Print\"; border-style: outset; border-width: "
+            "0px")
+
+
+        self.profile_stack.addWidget(self.user_page)
         self.stackedWidget_main.addWidget(self.profile_page)
 
 
@@ -424,3 +477,7 @@ class Ui_MainWindow(object):
         self.password_reg_lbl.setText(_translate("MainWindow", "Пароль:"))
         self.conf_reg_button.setText(_translate("MainWindow", "Зарегистрироваться"))
         self.name_reg_lbl.setText(_translate("MainWindow", "Имя:"))
+        self.profile_photo.setText(_translate("MainWindow", ""))
+        self.user_name.setText(_translate("MainWindow", ""))
+        self.user_surname.setText(_translate("MainWindow", ""))
+        self.user_email.setText(_translate("MainWindow", ""))

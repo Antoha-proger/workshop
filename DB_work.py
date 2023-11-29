@@ -1,4 +1,5 @@
 import sqlite3 as sq
+import json
 
 
 def select_all(database, table):
@@ -79,6 +80,41 @@ def update_data(detail, table="services"):
     cursor.execute(f"UPDATE {table} SET '{field}' = '{field}' - 1 WHERE name_of_good = '{detail}'")
     con.commit()
 
+
+def add_user(name, email, password):
+    con = sq.connect('workshop.db')
+    cursor = con.cursor()
+    cursor.execute(
+        f"INSERT INTO consumers (name, email, password) VALUES ('{name}', '{email}', '{password}')")
+    con.commit()
+
+
+def check_enter(email):
+    con = sq.connect('workshop.db')
+    cursor = con.cursor()
+    cursor.execute(f"SELECT email, password FROM consumers WHERE email = '{email}'")
+    return cursor.fetchall()
+
+def check_user_info(email):
+    con = sq.connect('workshop.db')
+    cursor = con.cursor()
+    cursor.execute(f"SELECT name, surname, email, password FROM consumers WHERE email = '{email}'")
+    return cursor.fetchall()
+
+
+def place_new_order(service_name, service_price, detail, detail_price, total, consumer_name, consumer_email, date):
+    # service_name = json.dumps(service_name)
+    # service_price = json.dumps(service_price)
+    # detail = json.dumps(detail)
+    # detail_price = json.dumps(detail_price)
+    con = sq.connect('workshop.db')
+    cursor = con.cursor()
+    cursor.execute(
+        f"INSERT INTO orders (service_name, service_price, detail, detail_price, total, "
+        f"consumer_name, consumer_email, date) VALUES ('{service_name}', '{service_price}', '{detail}', '{detail_price}',"
+        f"'{total}', '{consumer_name}', '{consumer_email}', '{date}')")
+    con.commit()
+
 ##con = sq.connect('workshop.db')
 ##cursor = con.cursor()
 ##cursor.execute(f"DELETE FROM consumers")
@@ -86,5 +122,12 @@ def update_data(detail, table="services"):
 
 
 #print(select_all('workshop.db', 'warehouse'))
+# ass = str(['dssdf'])
+# place_new_order(ass, 321, 'sdsdc', 113,1323, 'ssc',
+#                 'sdds', 'dsdfed')
 
 
+# con = sq.connect('workshop.db')
+# cursor = con.cursor()
+# cursor.execute(f"SELECT service_name FROM orders")
+# print(cursor.fetchall())
