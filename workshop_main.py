@@ -2,8 +2,8 @@ import sys
 from workshop_interface import *
 from PyQt5 import QtCore, QtGui, QtWidgets, QtSql
 from PyQt5.QtWidgets import QSizePolicy, QMessageBox, QTableWidgetItem
-from PyQt5.QtGui import QIcon, QPixmap
-from PyQt5.QtCore import QSize, QDate
+from PyQt5.QtGui import QIcon, QPixmap, QRegExpValidator
+from PyQt5.QtCore import QSize, QDate, QRegExp
 from datetime import date
 import DB_work
 import matplotlib.pyplot as plt
@@ -52,7 +52,7 @@ class MyWin(QtWidgets.QMainWindow):
 
         self.ui.btn_title.clicked.connect(lambda: self.ui.stackedWidget_main.setCurrentIndex(0))
         self.ui.pushButton_shop.clicked.connect(lambda: self.ui.stackedWidget_main.setCurrentIndex(1))
-        self.ui.pushButton_profile.clicked.connect(lambda: self.ui.stackedWidget_main.setCurrentIndex(2))
+        self.ui.pushButton_profile.clicked.connect(self.profile_button)
         
         # Подключение функций к пунктам меню
         self.ui.action_4.triggered.connect(lambda:self.close())
@@ -100,6 +100,31 @@ class MyWin(QtWidgets.QMainWindow):
 
         self.ui.place_order_btn.clicked.connect(self.place_order)
 
+        self.ui.name_reg_lineEdit.textChanged.connect(lambda:self.ui.name_reg_lineEdit.setStyleSheet("background-color: rgb(255, 255, 255);"))
+        self.ui.email_reg_lineEdit.textChanged.connect(lambda:self.ui.email_reg_lineEdit.setStyleSheet("background-color: rgb(255, 255, 255);"))
+        self.ui.password_reg_lineEdit.textChanged.connect(lambda:self.ui.password_reg_lineEdit.setStyleSheet("background-color: rgb(255, 255, 255);"))
+
+        pixmap = QPixmap("Icons\\my_profile.png")
+        p = pixmap.scaled(60, 60, QtCore.Qt.KeepAspectRatio)
+        self.ui.profile_photo.setPixmap(p)
+
+
+    def profile_button(self):
+        email = self.ui.user_email.text()
+
+        self.ui.stackedWidget_main.setCurrentIndex(2)
+        if self.isregistration:
+            con = QtSql.QSqlDatabase.addDatabase('QSQLITE')
+            con.setDatabaseName('workshop.db')
+            con.open()
+
+            stm = QtSql.QSqlTableModel()
+            stm.setTable('orders')
+            stm.setFilter(f"consumer_email='{email}'")
+            stm.select()
+
+            self.ui.tableview.setModel(stm)
+
 
     # Функция, срабатывающая при изменении значения в combobox'е
     def cbb_changed(self):
@@ -107,9 +132,16 @@ class MyWin(QtWidgets.QMainWindow):
         # Выборка из базы данных
         db_select = DB_work.select_name_n_price(self.ui.comboBox.itemText(self.ui.comboBox.currentIndex()))
         nes_detail = db_select[0][2]
-        detail_amount = DB_work.select_detail_count(nes_detail)
-        if detail_amount == 0:
-           self.ui.amount_lbl.setText(f"Количество товара на складе: {detail_amount}")
+        detail_amount = DB_work.select_detail_count_from_warehouse(nes_detail)
+        detail_amount_from_service = DB_work.select_detail_count_from_services(db_select[0][0])
+
+        if detail_amount_from_service == 0 and detail_amount != 0:
+           self.ui.amount_lbl.setText("Количество товара в магазине: 0\n"
+                                      "Товар будет заказан со склада")
+
+        if detail_amount_from_service == 0 and detail_amount == 0:
+            self.ui.amount_lbl.setText("В данный момент товар недоступен")
+
             
         # Установка текста(название услуги + цена)
         self.ui.service_lbl.setText(f'{db_select[0][0]}         {db_select[0][1]}')
@@ -125,8 +157,11 @@ class MyWin(QtWidgets.QMainWindow):
 
             db_select = DB_work.select_name_n_price(self.ui.comboBox.itemText(self.ui.comboBox.currentIndex()))
             nes_detail = db_select[0][2]
-            detail_amount = DB_work.select_detail_count(nes_detail)
-            if detail_amount == 0:
+            detail_amount = DB_work.select_detail_count_from_warehouse(nes_detail)
+            detail_amount_from_service = DB_work.select_detail_count_from_services(db_select[0][0])
+            if detail_amount_from_service == 0 and detail_amount == 0:
+                self.ui.statusbar.setStyleSheet("color: red")
+                self.ui.statusbar.showMessage("В данный момент данная услуга недоступна")
                 return
 
             self.ui.order_table.setRowCount(self.row_count + 1)
@@ -140,10 +175,10 @@ class MyWin(QtWidgets.QMainWindow):
             self.ui.order_table.setItem(self.row_count, 0, QTableWidgetItem("Итог"))
             self.ui.order_table.setItem(self.row_count, 3, QTableWidgetItem(str(self.total)))
 
-            self.service_name = self.service_name + ', ' + str(db_select[0][0])
-            self.service_price = self.service_price + ', ' + str(db_select[0][1])
-            self.detail = self.detail + ', ' + str(db_select[0][2])
-            self.detail_price = self.detail_price + ', ' + str(db_select[0][3])
+            self.service_name = self.service_name + str(db_select[0][0]) + ', '
+            self.service_price = self.service_price + str(db_select[0][1]) + ', '
+            self.detail = self.detail + str(db_select[0][2]) + ', '
+            self.detail_price = self.detail_price + str(db_select[0][3]) + ', '
         
         except:
             self.warning = QMessageBox.warning(self, 'Ошибка', "Возникла непредвиденная ошибка", QMessageBox.Ok)
@@ -161,13 +196,13 @@ class MyWin(QtWidgets.QMainWindow):
             con.open()
 
             stm = QtSql.QSqlTableModel()
-            stm.setTable('consumers')
+            stm.setTable('orders')
             stm.select()
 
-            stm.setHeaderData(1, QtCore.Qt.Horizontal, 'Фамилия')
-            stm.setHeaderData(2, QtCore.Qt.Horizontal, 'Услуга')
-            stm.setHeaderData(4, QtCore.Qt.Horizontal, 'Дата')
-            stm.setHeaderData(3, QtCore.Qt.Horizontal, 'Итог')
+            # stm.setHeaderData(1, QtCore.Qt.Horizontal, 'Фамилия')
+            # stm.setHeaderData(2, QtCore.Qt.Horizontal, 'Услуга')
+            # stm.setHeaderData(4, QtCore.Qt.Horizontal, 'Дата')
+            # stm.setHeaderData(3, QtCore.Qt.Horizontal, 'Итог')
 
             self.ui.tableWidget.setModel(stm)
 
@@ -204,7 +239,30 @@ class MyWin(QtWidgets.QMainWindow):
         name = self.ui.name_reg_lineEdit.text()
         email = self.ui.email_reg_lineEdit.text()
         password = self.ui.password_reg_lineEdit.text()
-        DB_work.add_user(name, email, password)
+
+        if name != "" and email != "" and password != "":
+            self.ui.profile_stack.setCurrentIndex(1)
+            user_info = DB_work.check_user_info(email)
+            self.ui.user_name.setText(user_info[0][0])
+            self.ui.user_surname.setText(user_info[0][1])
+            self.ui.user_email.setText(user_info[0][2])
+            DB_work.add_user(name, email, password)
+            self.isregistration = True
+        else:
+            self.ui.statusbar.setStyleSheet("color: red")
+            self.ui.statusbar.showMessage("Все поля должны быть заполнены")
+            if name == "":
+                self.ui.name_reg_lineEdit.setStyleSheet("border-color:red; border-width:2px; "
+                                                        "background-color: rgb(255, 255, 255);")
+            if email == "":
+                self.ui.email_reg_lineEdit.setStyleSheet("border-color:red; border-width:2px; "
+                                                        "background-color: rgb(255, 255, 255);")
+            if password == "":
+                self.ui.password_reg_lineEdit.setStyleSheet("border-color:red; border-width:2px; "
+                                                        "background-color: rgb(255, 255, 255);")
+            return
+
+
 
     def enter(self):
         email = self.ui.email_lineEdit.text()
@@ -212,13 +270,13 @@ class MyWin(QtWidgets.QMainWindow):
         try:
             ent = DB_work.check_enter(email)
             if password == ent[0][1]:
-                print("enter")
                 self.ui.profile_stack.setCurrentIndex(1)
                 user_info = DB_work.check_user_info(email)
 
                 self.ui.user_name.setText(user_info[0][0])
                 self.ui.user_surname.setText(user_info[0][1])
                 self.ui.user_email.setText(user_info[0][2])
+                self.isregistration = True
             else:
                 self.warning = QMessageBox.warning(self, 'Ошибка',
                                                    "Возникла ошибка. Неправильный Email или пароль",
@@ -227,20 +285,32 @@ class MyWin(QtWidgets.QMainWindow):
             self.warning = QMessageBox.warning(self, 'Ошибка', "Неправильный Email или пароль", QMessageBox.Ok)
 
 
-        pixmap = QPixmap("Icons\\my_profile.png")
-        p = pixmap.scaled(60, 60, QtCore.Qt.KeepAspectRatio)
-        self.ui.profile_photo.setPixmap(p)
-        #self.ui.profile_stack.setCurrentIndex(1)
+
 
     def place_order(self):
         date_my = self.ui.dateEdit.date()
         email = self.ui.email_lineEdit.text()
         user_info = DB_work.check_user_info(email)
         consumer_name = user_info[0][0]
-        #print(self.service_name, self.service_price, self.detail, self.detail_price, self.total, consumer_name, email, date_my.toPyDate())
+
+        # print(self.service_name, self.service_price, self.detail, self.detail_price, self.total, consumer_name, email, date_my.toPyDate())
+
+        service_list = self.service_name.split(',')[:-1]
+        detail_list = self.detail.split(',')[:-1]
+
+        print(service_list, detail_list)
+
+        for i in range(len(service_list)):
+            if DB_work.select_detail_count_from_services(service_list[i].strip()) > 0:
+                DB_work.update_data_in_services(service_list[i].strip())
+            else:
+                if DB_work.select_detail_count_from_warehouse(detail_list[i].strip()) > 0:
+                    DB_work.update_data_in_warehouse(detail_list[i].strip())
+                else:
+                    return
+
         DB_work.place_new_order(self.service_name, self.service_price, self.detail, self.detail_price,
-                                self.total,
-                                consumer_name, email, date_my.toPyDate())
+                                self.total, consumer_name, email, date_my.toPyDate())
 
 
 

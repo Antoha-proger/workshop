@@ -10,7 +10,9 @@ def select_all(database, table):
     con = sq.connect(database)
     cursor = con.cursor()
     cursor.execute(f"SELECT * FROM {table}")
-    return cursor.fetchall()
+    value = cursor.fetchall()
+    con.close()
+    return value
 
 
 def add_data(surname, service, date, total, database='workshop.db', table='consumers'):
@@ -41,12 +43,22 @@ def select_name_n_price(name_of_service, database='workshop.db'):
     return cursor.fetchall()
 
 
-def select_detail_count(detail, table = "warehouse", database = "workshop.db"):
+def select_detail_count_from_warehouse(detail, table = "warehouse", database = "workshop.db"):
     con = sq.connect(database)
     cursor = con.cursor()
     cursor.execute(f"SELECT amount FROM {table} WHERE name_of_good = '{detail}'")
-    return int(cursor.fetchall()[0][0])
+    value = int(cursor.fetchall()[0][0])
+    con.close()
+    return value
 
+
+def select_detail_count_from_services(service, table = "services", database = "workshop.db"):
+    con = sq.connect(database)
+    cursor = con.cursor()
+    cursor.execute(f"SELECT detail_amount FROM {table} WHERE \"name of services\" = '{service}'")
+    value = int(cursor.fetchall()[0][0])
+    con.close()
+    return value
 
 def records(table, database = "workshop.db"):
     con = sq.connect(database)
@@ -58,7 +70,7 @@ def records(table, database = "workshop.db"):
 def total_sum():
     con = sq.connect('workshop.db')
     cursor = con.cursor()
-    cursor.execute(f"SELECT SUM(total) FROM consumers")
+    cursor.execute(f"SELECT SUM(total) FROM orders")
     return int(cursor.fetchall()[0][0])
 
 
@@ -69,16 +81,20 @@ def chart():
     return cursor.fetchall()
 
 
-def update_data(detail, table="services"):
-    field = ''
-    if table == "warehouse":
-        field = 'amount'
-    if table == "services":
-        field = "detail_amount"
+def update_data_in_warehouse(detail, table="warehouse"):
     con = sq.connect('workshop.db')
     cursor = con.cursor()
-    cursor.execute(f"UPDATE {table} SET '{field}' = '{field}' - 1 WHERE name_of_good = '{detail}'")
+    cursor.execute(f"UPDATE {table} SET amount = amount - 1 WHERE name_of_good = '{detail}'")
     con.commit()
+    con.close()
+
+
+def update_data_in_services(service_name, table="services"):
+    con = sq.connect('workshop.db')
+    cursor = con.cursor()
+    cursor.execute(f"UPDATE {table} SET detail_amount = detail_amount - 1 WHERE \"name of services\" = '{service_name}'")
+    con.commit()
+    con.close()
 
 
 def add_user(name, email, password):
@@ -131,3 +147,5 @@ def place_new_order(service_name, service_price, detail, detail_price, total, co
 # cursor = con.cursor()
 # cursor.execute(f"SELECT service_name FROM orders")
 # print(cursor.fetchall())
+
+#print(select_detail_count_from_services('Замена сетевой карты'))

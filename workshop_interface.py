@@ -57,13 +57,13 @@ class Ui_MainWindow(object):
         self.service_lbl.setObjectName("service_lbl")
 
         self.good_lbl = QtWidgets.QLabel(self.page)
-        self.good_lbl.setGeometry(QtCore.QRect(45, 220, 301, 51))
+        self.good_lbl.setGeometry(QtCore.QRect(45, 215, 301, 31))
         self.good_lbl.setStyleSheet("color: #FF9200;\n"
                                        "font: 75 10pt \"Segoe Print\";")
         self.good_lbl.setObjectName("good_lbl")
 
         self.amount_lbl = QtWidgets.QLabel(self.page)
-        self.amount_lbl.setGeometry(QtCore.QRect(45, 255, 301, 51))
+        self.amount_lbl.setGeometry(QtCore.QRect(45, 245, 301, 51))
         self.amount_lbl.setStyleSheet("color: #FF5555;\n"
                                  "font: 75 10pt \"Segoe Print\";")
         self.amount_lbl.setObjectName("amount_lbl")
@@ -264,12 +264,14 @@ class Ui_MainWindow(object):
         self.email_lineEdit.setGeometry(QtCore.QRect(80, 55, 150, 20))
         self.email_lineEdit.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.email_lineEdit.setObjectName("email_lineEdit")
+        self.email_lineEdit.setClearButtonEnabled(True)
 
         self.password_lineEdit = QtWidgets.QLineEdit(self.ent_page_stack)
         self.password_lineEdit.setGeometry(QtCore.QRect(80, 95, 150, 20))
         self.password_lineEdit.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.password_lineEdit.setObjectName("password_lineEdit")
         self.password_lineEdit.setEchoMode(QtWidgets.QLineEdit.Password)
+        self.password_lineEdit.setClearButtonEnabled(True)
 
         self.conf_ent_button = myButton(self.ent_page_stack)
         self.conf_ent_button.setGeometry(QtCore.QRect(80, 140, 145, 25))
@@ -298,6 +300,7 @@ class Ui_MainWindow(object):
         self.name_reg_lineEdit.setGeometry(QtCore.QRect(80, 65, 150, 15))
         self.name_reg_lineEdit.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.name_reg_lineEdit.setObjectName("name_reg_lineEdit")
+        self.name_reg_lineEdit.setClearButtonEnabled(True)
 
         self.email_reg_lbl = QtWidgets.QLabel(self.reg_page_stack)
         self.email_reg_lbl.setGeometry(QtCore.QRect(20, 80, 50, 30))
@@ -315,12 +318,14 @@ class Ui_MainWindow(object):
         self.email_reg_lineEdit.setGeometry(QtCore.QRect(80, 90, 150, 15))
         self.email_reg_lineEdit.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.email_reg_lineEdit.setObjectName("email_reg_lineEdit")
+        self.email_reg_lineEdit.setClearButtonEnabled(True)
 
         self.password_reg_lineEdit = QtWidgets.QLineEdit(self.reg_page_stack)
         self.password_reg_lineEdit.setGeometry(QtCore.QRect(80, 115, 150, 15))
         self.password_reg_lineEdit.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.password_reg_lineEdit.setObjectName("password_reg_lineEdit")
         self.password_reg_lineEdit.setEchoMode(QtWidgets.QLineEdit.Password)
+        self.password_reg_lineEdit.setClearButtonEnabled(True)
 
         self.conf_reg_button = myButton(self.reg_page_stack)
         self.conf_reg_button.setGeometry(QtCore.QRect(80, 140, 160, 25))
@@ -346,24 +351,24 @@ class Ui_MainWindow(object):
         self.user_page = QtWidgets.QWidget()
         self.user_page.setObjectName('user_page')
 
-        self.user_frame_menu = QtWidgets.QFrame(self.user_page)
-        self.user_frame_menu.setGeometry(QtCore.QRect(0, 70, 65, 161))
-        self.user_frame_menu.setStyleSheet("background-color: #25567B;  border-style: outset; "
-                                           "border-width: 1px; "
-                                           "border-color: #FF9200;"
-                                           "border-radius: 20px")
-        self.user_frame_menu.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.user_frame_menu.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.user_frame_menu.setObjectName("profile_frame")
+        # self.user_frame_menu = QtWidgets.QFrame(self.user_page)
+        # self.user_frame_menu.setGeometry(QtCore.QRect(0, 70, 65, 161))
+        # self.user_frame_menu.setStyleSheet("background-color: #25567B;  border-style: outset; "
+        #                                    "border-width: 1px; "
+        #                                    "border-color: #FF9200;"
+        #                                    "border-radius: 20px")
+        # self.user_frame_menu.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        # self.user_frame_menu.setFrameShadow(QtWidgets.QFrame.Raised)
+        # self.user_frame_menu.setObjectName("profile_frame")
 
 
 
         self.user_frame_info = QtWidgets.QFrame(self.user_page)
         self.user_frame_info.setGeometry(QtCore.QRect(70, 0, 460, 65))
-        self.user_frame_info.setStyleSheet("background-color: #25567B;  border-style: outset; "
-                                           "border-width: 1px; "
-                                           "border-color: #FF9200;"
-                                           "border-radius: 20px")
+        self.user_frame_info.setStyleSheet("background-color: #25567B;  border-style: outset; ")
+                                           # "border-width: 1px; "
+                                           # "border-color: #FF9200;"
+                                           # "border-radius: 20px")
         self.user_frame_info.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.user_frame_info.setFrameShadow(QtWidgets.QFrame.Raised)
         self.user_frame_info.setObjectName("user_frame_info")
@@ -391,10 +396,14 @@ class Ui_MainWindow(object):
             "color:#FF9200; font: 75 10pt \"Segoe Print\"; border-style: outset; border-width: "
             "0px")
 
+        self.tableview = QtWidgets.QTableView(self.user_page)
+        self.tableview.setGeometry(QtCore.QRect(10, 70, 650, 160))
+        self.tableview.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.tableview.setObjectName("tableview")
+
 
         self.profile_stack.addWidget(self.user_page)
         self.stackedWidget_main.addWidget(self.profile_page)
-
 
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 757, 21))
